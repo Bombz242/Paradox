@@ -11,6 +11,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level_2.unity
     guid: 7a939506b62741146911f3aeb94df0c2
+  - enabled: 1
+    path: Assets/Scenes/Level_3.unity
+    guid: 282cc904535384f4c928f695e52b1df7
+  - enabled: 1
+    path: Assets/Scenes/Level_4.unity
+    guid: 3466199c918b3f54db2d4da5e0bebc9e
+  - enabled: 1
+    path: Assets/Scenes/Level_5.unity
+    guid: 26923cf5fc9d2bc409a3020e0ff4679a
   - enabled: 0
     path: Assets/SpeedTutor - Tutorial Scene - FREE/Scenes/SpeedTutor Test Scene.unity
     guid: a29848c6cbdc245439fd7641ab34b8bc

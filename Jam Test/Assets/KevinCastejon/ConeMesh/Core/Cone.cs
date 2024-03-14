@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KevinCastejon.ConeMesh
-{
+namespace KevinCastejon.ConeMesh{
+
+
     public enum ConeOrientation
     {
         X,
@@ -15,8 +16,11 @@ namespace KevinCastejon.ConeMesh
     /// Generate a cone mesh, renderer and collider, on the fly.
     /// </summary>
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
-    public class Cone : MonoBehaviour
-    {
+    public class Cone : MonoBehaviour{
+
+        [SerializeField]
+        private Material MYCONEMAT;
+
         [SerializeField]
         private bool _pivotAtTop = true;
         [SerializeField]
@@ -44,7 +48,10 @@ namespace KevinCastejon.ConeMesh
         private MeshCollider _meshCollider;
 
         public bool PivotAtTop { get => _pivotAtTop; set { _pivotAtTop = value; GenerateCone(); } }
-        public Material Material { get => _material; set { _material = value; _meshRenderer = _meshRenderer ? _meshRenderer : gameObject.GetComponent<MeshRenderer>(); _meshRenderer.material = _material; } }
+
+        public Material Material { get => _material;
+            set { _material = value; _meshRenderer = _meshRenderer ? _meshRenderer : gameObject.GetComponent<MeshRenderer>(); _meshRenderer.material = _material; } }
+
         public int ConeSubdivisions { get => _coneSides; set { _coneSides = value; GenerateCone(); } }
         public float ConeRadius { get => _coneRadius; set { _coneRadius = value; GenerateCone(); } }
         public float ConeHeight { get => _coneHeight; set { _coneHeight = value; GenerateCone(); } }
@@ -74,6 +81,7 @@ namespace KevinCastejon.ConeMesh
             _meshFilter.sharedMesh = _coneMesh;
 
             _meshRenderer.additionalVertexStreams = _coneMesh;
+            //_meshRenderer.material = _material;
             _meshRenderer.material = _material;
             _meshCollider.sharedMesh = _coneMesh;
             _meshCollider.convex = true;

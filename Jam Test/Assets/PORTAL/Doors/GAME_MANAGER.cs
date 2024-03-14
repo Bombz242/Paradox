@@ -8,7 +8,10 @@ public class GAME_MANAGER : MonoBehaviour {
 
     public static GAME_MANAGER MAN;
 
-    public float Counter;
+    public float sinceLastBot;
+    public float Bots;
+
+    //public float Counter;
 
     private void InstantiateController () {
         if (MAN == null) {
@@ -27,6 +30,7 @@ public class GAME_MANAGER : MonoBehaviour {
     public int stage = 0;   
 
     public void DEATH () {
+        GetComponent<AudioSource>().Stop();
         Canvas_Manage.Man.Alert();
         Past = new List<Data>(Now);
         StopAllCoroutines();
@@ -49,6 +53,8 @@ public class GAME_MANAGER : MonoBehaviour {
 
     public bool onMenu = true;
     public bool isPlaying = false;
+
+    public Material CONEMATERIAL;
 
 
 
@@ -76,13 +82,63 @@ public class GAME_MANAGER : MonoBehaviour {
         stage++;
         Past.Clear();
         Now.Clear();
-        DEATH();
+
+        GetComponent<AudioSource>().Stop();
+        Canvas_Manage.Man.Complete();
+        //Past = new List<Data>(Now);
+        StopAllCoroutines();
+        SceneManager.LoadScene(stage, LoadSceneMode.Single);
+
+        //DEATH();
     }
     //DEATH ();
 
+    public void BotLooking () {
+
+        if (sinceLastBot < 1f) {
+            GetComponent<AudioSource>().time = Bots;
+            GetComponent<AudioSource>().Play();
+        }
+        Bots += Time.deltaTime;
+        sinceLastBot = 0f;
+
+        if (Bots > 9f) {
+            DEATH();
+        }
+    }
+
+    public void LoadNew () {
+        Past.Clear();
+        Now.Clear();
+
+        GetComponent<AudioSource>().Stop();
+        Canvas_Manage.Man.Complete();
+        //Past = new List<Data>(Now);
+        StopAllCoroutines();
+        SceneManager.LoadScene(stage, LoadSceneMode.Single);
+    }
 
     private void Update () {
-        Counter += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.F8)) {
+            //NextLevel();
+            stage++;
+            LoadNew();
+        }
+        if (Input.GetKeyDown(KeyCode.F7)) {
+            stage--;
+            LoadNew();
+        }
+
+
+        sinceLastBot += Time.deltaTime;
+
+        if (sinceLastBot > 0.5f && Bots > 0) {
+            Bots -= 0.2f * Time.deltaTime;
+            GetComponent<AudioSource>().Stop();
+        }
+
+
+        //Counter += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.R) ) {
             DEATH();
         }
@@ -95,10 +151,14 @@ public class GAME_MANAGER : MonoBehaviour {
     }
 
 
+    
 
 
     private void Start () {
-        Counter = 0f;
+        //Counter = 0f;
+        GetComponent<AudioSource>().Stop();
+        sinceLastBot = 0f;
+        Bots = 0f;
         Player = GameObject.Find("Player").transform;
         PlayerManager = Player.GetComponent<Player_Manage>();
 
@@ -170,16 +230,16 @@ public class GAME_MANAGER : MonoBehaviour {
 
     void RecordTime () {
         Data temp = new Data();
+        /*
         Anima ani = new Anima();
-
         if (Input.GetKey(KeyCode.Space)) {
             ani = Anima.Jump;
         } else if (Input.GetKey(KeyCode.W)) {
             ani = Anima.Forward;
         } else if (Input.GetKey(KeyCode.S)) {
             ani = Anima.Backward;
-        }
-        temp.Agregar(Player.position, Player.rotation , ani, PlayerManager.isHolding, PlayerManager.isShooting);
+        }*/
+        temp.Agregar(Player.position, Player.rotation, PlayerManager.isHolding, PlayerManager.isShooting);
         Now.Add(temp);
     }
 
@@ -193,16 +253,16 @@ public class GAME_MANAGER : MonoBehaviour {
     [System.Serializable]
     public class Data {
         public Vector3 pos;
-        public Anima anim;
+        //public Anima anim;
         public bool hold;
         public bool shoot;
         public Quaternion rot;
-        public Events eve;
+        //public Events eve;
 
-        public void Agregar (Vector3 t1 , Quaternion q, Anima t2, bool h, bool s) {
+        public void Agregar (Vector3 t1 , Quaternion q, bool h, bool s) {
             pos = t1;
             rot = q;
-            anim = t2;
+            //anim = t2;
             hold = h;
             shoot = s;
         }

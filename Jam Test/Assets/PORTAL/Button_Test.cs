@@ -7,6 +7,8 @@ public class Button_Test : MonoBehaviour {
 
     public GameObject Door;
 
+    public GameObject[] DOORS;
+
     public bool Working = false;
 
     //private void OnTriggerEnter (Collider other) {
@@ -28,7 +30,15 @@ public class Button_Test : MonoBehaviour {
         //if (obj.Contains(other.gameObject)) {
 
         Working = true;
-        Door.GetComponent<Door_Test>().ButtonEvent(true);
+        if (DOORS.Length == 0) {
+            Door.GetComponent<Door_Test>().ButtonEvent(true);
+        } else {
+            foreach(GameObject t in DOORS) {
+                t.GetComponent<Door_Test>().ButtonEvent(true);
+            }
+        }
+
+        //Door.GetComponent<Door_Test>().ButtonEvent(true);
     }
 
 
@@ -36,7 +46,15 @@ public class Button_Test : MonoBehaviour {
 
     private void OnTriggerExit (Collider other) {
         Working = false;
-        Door.GetComponent<Door_Test>().ButtonEvent(false);
+        if (DOORS.Length == 0) {
+            Door.GetComponent<Door_Test>().ButtonEvent(false);
+        } else {
+            foreach (GameObject t in DOORS) {
+                t.GetComponent<Door_Test>().ButtonEvent(false);
+            }
+        }
+
+        //Door.GetComponent<Door_Test>().ButtonEvent(false);
     }
 
 
